@@ -1,5 +1,9 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+
+from src.config.models import BaseModel
+
 
 class TaskStatus(models.TextChoices):
     CREATED = 'created'
@@ -8,7 +12,7 @@ class TaskStatus(models.TextChoices):
     CANCELLED = 'cancelled'
     FAILED = 'failed'
 
-class Tasks(models.Model):
+class Tasks(models.Model, BaseModel):
     name = models.CharField(
         max_length=64,
         unique=True,
@@ -34,14 +38,25 @@ class Tasks(models.Model):
         ],
         verbose_name="Приоритетность"
     )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="Дата создания"
+
+    users = models.ManyToManyField(
+        to = "User",
+        related_name="tasks",
+
     )
-    updated_at = models.DateTimeField(
-        auto_now=True,
-        verbose_name="Дата обновления"
+
+    project = models.ForeignKey(
+        to = "Project",
+        on_delete=models.SET_NULL,
+        related_name="tasks",
     )
+
+    assignee = models.ForeignKey(
+        to="Users",
+        on_delete=models.SET_NULL,
+        related_name="tasks",
+    )
+
     class Meta:
         ordering = ('priority', 'created_at')
         db_table = 'tasks'
