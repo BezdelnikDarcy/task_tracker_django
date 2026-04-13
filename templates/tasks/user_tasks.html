@@ -25,14 +25,17 @@
 <table class="table table-dark table-hover text-center">
   <thead>
     <tr>
+      <th scope="col">Пользователь</th>
       <th scope="col">Задача</th>
       <th scope="col">Комментарии</th>
     </tr>
   </thead>
 
   <tbody>
+
   {% for task in tasks %}
-    <tr>
+  <tr>
+      <td>{{ task.assignee}} </td>>
       <td>{{ task.name }}</td>
 <td>
       {% for comment in task.comments.all %}
@@ -42,7 +45,6 @@
     </tr>
   {% endfor %}
   </tbody>
-
 </table>
 
 </div>

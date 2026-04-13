@@ -10,7 +10,7 @@
           <a class="nav-link" aria-current="page" href="{% url "tasks" %}">Task</a>
         </li>
           <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="{% url "users" %}" >Users</a>
+          <a class="nav-link" aria-current="page" href="{% url "user_tasks" user_id=request.user.id %}" >Users</a>
         </li>
       </ul>
     </div>

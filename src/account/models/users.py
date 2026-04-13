@@ -37,7 +37,7 @@ class Owners(User):
 
 class Employees(User):
     work_time_hours = models.PositiveSmallIntegerField()
-    worktime_timezone = models.SmallIntegerField
+    worktime_timezone = models.SmallIntegerField(default=0)
 
     class Meta:
         db_table = 'employees'

@@ -63,6 +63,15 @@ class Tasks(BaseModel):
     def __str__(self):
         return self.name
 
+class ComplectedTasks(models.Manager):
+
+    def get_queryset(self):
+        return Tasks.objects.filter(status=TaskStatus.COMPLETED)
+
+
 class EducationTasks(Tasks):
+
     class Meta:
         proxy = True
+
+    objects = ComplectedTasks()

@@ -1,31 +1,25 @@
-from django.shortcuts import render
 from django.http import HttpResponse
+from task_manager.models import Tasks
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
 
 # MTV
 def home(request):
     return render(request, 'home.html')
 
-def tasks(request):
-    tasks = [
-        {"task_name": "Fix login bug", "status": "in progress", "priority": "high"},
-        {"task_name": "Create navbar", "status": "done", "priority": "medium"},
-        {"task_name": "Write tests", "status": "todo", "priority": "high"},
-        {"task_name": "Update documentation", "status": "todo", "priority": "low"},
-        {"task_name": "Deploy project", "status": "in progress", "priority": "medium"}
-    ]
-    context = {
-        "tasks": tasks
-    }
-    return render(request, 'tasks.html', context)
 
-def users(request):
-    users = [
-        {"id": 0, "name": "Alice", "age": 25},
-        {"id": 1,"name": "Bob", "age": 30},
-        {"id": 2,"name": "Charlie", "age": 28},
-        {"id": 3,"name": "Diana", "age": 22}
-    ]
+def tasks(request):
     context = {
-        "users": users
+        "tasks": Tasks.objects.prefetch_related("comments").all()
     }
-    return render(request, 'users.html', context=context)
+    return render(request,"tasks.html",context=context)
+
+
+def user_tasks(request, user_id, ):
+
+    context = {
+        "tasks": Tasks.objects.filter(assignee__id=user_id).all(),
+        "id" : user_id,
+    }
+    return render(request, 'user_tasks.html', context=context)
