@@ -44,6 +44,8 @@ class Tasks(BaseModel):
         on_delete=models.SET_NULL,
         related_name="tasks",
         null=True,
+        blank=True,
+        verbose_name="Проект"
     )
 
     assignee = models.ForeignKey(
@@ -52,6 +54,7 @@ class Tasks(BaseModel):
         related_name="tasks",
         null=True,
         blank=True,
+        verbose_name="Исполнитель"
     )
 
     class Meta:
