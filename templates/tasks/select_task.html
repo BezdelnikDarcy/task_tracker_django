@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<p>Выберите задачу которую хотите изменить <p>
+
+<form action="/select_task" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Выбрать">
+</form>
+
+{% endblock %}

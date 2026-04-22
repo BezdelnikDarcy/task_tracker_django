@@ -20,6 +20,7 @@ class Tasks(BaseModel):
     )
     description = models.TextField(
         null=True,
+        blank=True,
         verbose_name="Описание"
     )
     status = models.CharField(

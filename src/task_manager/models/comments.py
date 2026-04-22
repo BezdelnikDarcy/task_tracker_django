@@ -14,7 +14,7 @@ class Comments(BaseModel):
         on_delete=models.SET_NULL,
         related_name="comments",
         null=True,
-
+        blank=True,
     )
     task = models.ForeignKey(
         to = "Tasks",
@@ -25,7 +25,7 @@ class Comments(BaseModel):
 
 
     class Meta:
-        ordering = ('created_at','message' )
+        ordering = ['created_at', ]
         db_table = 'comments'
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
