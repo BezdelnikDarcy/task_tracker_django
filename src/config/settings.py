@@ -155,7 +155,7 @@ STATIC_ROOT = BASE_DIR.parent / "static"
 
 #media
 MEDIA_URL = 'media/'
-MEDIA_ROOT = 'media_fiels'
+MEDIA_ROOT = 'media_files'
 
 #storage
 STORAGE = {
