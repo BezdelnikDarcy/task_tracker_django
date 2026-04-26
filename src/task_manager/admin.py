@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 from task_manager.models import Tasks, Tags, Projects, ProjectDetails,Comments, Attachments
 
 
@@ -103,9 +104,29 @@ class ProjectsAdmin(admin.ModelAdmin):
     exclude = ('owner',)
     inlines = (ProjectDetailsInline, )
 
+
+class AttachmentsAdmin(admin.ModelAdmin):
+    list_display = ('name',
+                    'task',
+                    'file',
+                    'display_picture',
+                    'picture',
+                    )
+    list_filter = ("task",)
+    list_per_page = 5
+
+    @admin.display(description="Отображение картинки")
+    def display_picture(self, instance):
+        if instance.picture:
+            return mark_safe(f"<img src ={ instance.picture.url } width=150 />")
+
+    def delete_queryset(self, request, queryset):
+        for obj in queryset:
+            obj.delete()
+
 admin.site.register(Tags)
 admin.site.register(ProjectDetails)
 admin.site.register(Comments)
-admin.site.register(Attachments)
+admin.site.register(Attachments, AttachmentsAdmin)
 
 # Register your models here.

@@ -3,10 +3,10 @@ from task_manager.models import Tasks, Comments
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from task_manager.models.form_tasks import TaskForm
-from task_manager.models.form_comments import CommentForm
-from task_manager.models.form_select_task import SelectTaskForm
+from task_manager.models.forms import TaskForm, CommentForm, SelectTaskForm, AttachmentsForm
 from account.models.users import User
+
+
 
 # MTV
 def home(request):
@@ -20,7 +20,7 @@ def comments(request):
 
 def tasks(request):
     context = {
-        "tasks": Tasks.objects.prefetch_related("comments").all()
+        "tasks": Tasks.objects.prefetch_related("comments","attachments").all()
     }
     return render(request,"tasks.html",context=context)
 
@@ -77,3 +77,14 @@ def edit_task(request, **kwargs):
     else:
         form = TaskForm(instance=task)
     return render(request, 'edit_task.html', {'form': form})
+
+def create_attachment(request):
+    if request.method == "POST":
+        form = AttachmentsForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('tasks'))
+    else:
+        form = AttachmentsForm()
+
+    return render(request, 'create_attachment.html', {'form': form})

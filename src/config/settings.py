@@ -151,6 +151,25 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR.parent / "static/images",
 ]
+STATIC_ROOT = BASE_DIR.parent / "static"
+
+#media
+MEDIA_URL = 'media/'
+MEDIA_ROOT = 'media_fiels'
+
+#storage
+STORAGE = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiels": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    }
+}
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
 
 #iternak IPs
 INTERNAL_IPS = [

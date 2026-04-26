@@ -27,6 +27,7 @@
     <tr>
       <th scope="col">Задача</th>
       <th scope="col">Комментарии</th>
+        <th scope="col">Вложения</th>
     </tr>
   </thead>
 
@@ -37,6 +38,20 @@
 <td>
       {% for comment in task.comments.all %}
          <p>{{ comment.message }}
+      {% endfor %}
+</td>
+        <td>
+      {% for at in task.attachments.all %}
+             <p>{% if at.picture %}
+             <img style="max-height: 100px" src = "{{ at.picture.url }}"/>
+             {% endif %}
+                 {% if at.file %}
+            <p>
+            <a href="{{ at.file.url }}" target="_blank" class="file-link">
+                🔗 Открыть вложение
+        </a>
+    </p>
+{% endif %}
       {% endfor %}
 </td>
     </tr>

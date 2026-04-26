@@ -14,6 +14,19 @@ class Attachments(BaseModel):
         related_name = "attachments",
         on_delete=models.CASCADE,
     )
+    file = models.FileField(
+        upload_to="attachments/files",
+        blank=True,
+        null=True,
+        verbose_name="Файлы"
+    )
+    picture = models.FileField(
+        upload_to='attachments/pictures',
+        null=True,
+        blank=True,
+        verbose_name="Картинки",
+    )
+
 
     class Meta:
         ordering = ('name',)
@@ -23,3 +36,11 @@ class Attachments(BaseModel):
 
     def __str__(self):
         return self.name
+
+    def delete(self, *args, **kwargs):
+        if self.file:
+            self.file.delete(save=False)
+        if self.picture:
+            self.picture.delete(save=False)
+
+        super().delete(*args, **kwargs)

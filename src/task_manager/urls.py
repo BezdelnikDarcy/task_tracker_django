@@ -1,5 +1,5 @@
 from django.urls import path
-from task_manager.views import home, tasks, user_tasks, comments, create_comment, create_task, edit_task, select_task
+from task_manager.views import home, tasks, user_tasks, comments, create_comment, create_task, edit_task, select_task, create_attachment
 from debug_toolbar.toolbar import debug_toolbar_urls
 
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('create_task', create_task, name='create_task'),
     path('select_task', select_task, name='select_task'),
     path('edit_task/<int:task_id>', edit_task, name='edit_task'),
+    path('create_attachment', create_attachment, name='create_attachment'),
 ] + debug_toolbar_urls()
