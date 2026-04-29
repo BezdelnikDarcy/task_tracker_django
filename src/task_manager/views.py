@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.http import HttpResponse
 from task_manager.models import Tasks, Comments
 from django.http import HttpResponseRedirect
@@ -5,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from task_manager.models.forms import TaskForm, CommentForm, SelectTaskForm, AttachmentsForm
 from account.models.users import User
+from django.views.decorators.cache import cache_page
 
 
 
@@ -12,18 +14,19 @@ from account.models.users import User
 def home(request):
     return render(request, 'home.html')
 
+@cache_page(60*30)
 def comments(request):
     context = {
         'comments' : Comments.objects.select_related('user','task').all(),
     }
     return render(request, 'comments.html', context=context)
 
+@cache_page(60*30)
 def tasks(request):
     context = {
         "tasks": Tasks.objects.prefetch_related("comments","attachments").all()
     }
     return render(request,"tasks.html",context=context)
-
 
 def user_tasks(request, user_id):
 
@@ -38,6 +41,7 @@ def create_task(request):
         form = TaskForm(request.POST)
         if form.is_valid():
             form.save()
+            cache.clear()
             return HttpResponseRedirect(reverse('tasks'))
     else:
         form = TaskForm()
@@ -52,6 +56,7 @@ def create_comment(request):
                                     user=User.objects.get(id=int(request.POST['user'])),
                                     task=Tasks.objects.get(id=int(request.POST['task'])),
                                     )
+            cache.clear()
             return HttpResponseRedirect(reverse('comments'))
     else:
         form = CommentForm()
@@ -73,6 +78,7 @@ def edit_task(request, **kwargs):
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
+            cache.clear()
             return HttpResponseRedirect(reverse('tasks'))
     else:
         form = TaskForm(instance=task)
@@ -83,6 +89,7 @@ def create_attachment(request):
         form = AttachmentsForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            cache.clear()
             return HttpResponseRedirect(reverse('tasks'))
     else:
         form = AttachmentsForm()
