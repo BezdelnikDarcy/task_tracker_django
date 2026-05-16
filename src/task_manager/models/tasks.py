@@ -3,6 +3,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from config.models import BaseModel
+from task_manager.managers import TaskManager
 
 
 class TaskStatus(models.TextChoices):
@@ -37,6 +38,7 @@ class Tasks(BaseModel):
             MinValueValidator(1),
             MaxValueValidator(5)
         ],
+        default=3,
         verbose_name="Приоритетность"
     )
 
@@ -57,6 +59,7 @@ class Tasks(BaseModel):
         blank=True,
         verbose_name="Исполнитель"
     )
+    objects = TaskManager()
 
     class Meta:
         ordering = ('-priority', '-created_at')

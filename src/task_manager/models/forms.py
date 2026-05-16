@@ -1,5 +1,7 @@
+from email import message
+
 from django import forms
-from task_manager.models import Tasks, Attachments
+from task_manager.models import Tasks, Attachments, Comments
 from django.core.exceptions import ValidationError
 from django.forms import Textarea
 from account.models.users import User
@@ -26,18 +28,26 @@ class SelectTaskForm(forms.Form):
                                   queryset=Tasks.objects.all(),
                                   )
 
-class CommentForm(forms.Form):
-    message = forms.CharField(label="Комментарий",
-                              widget=forms.Textarea,
-                              max_length=256,
-                              )
-    user = forms.ModelChoiceField(label="Пользователь",
-                                  queryset=User.objects.all(),
-                                  widget=forms.Select(attrs={'class': 'user-select'}),
-                                  )
-    task = forms.ModelChoiceField(label="Задача",
-                                  queryset=Tasks.objects.all(),
-                                  )
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ['message', 'user', 'task']
+        widgets = {
+            'message': forms.Textarea(attrs={'max_length': 256}),
+            'user': forms.Select(attrs={'class': 'user-select'}),
+        }
+        labels = {
+            'message': 'Комментарий',
+            'user': 'Пользователь',
+            'task': 'Задача',
+        }
+        queryset = {
+            'user' : User.objects.all(),
+            'task' : Tasks.objects.all(),
+        }
+
 
 class AttachmentsForm(forms.ModelForm):
     class Meta:

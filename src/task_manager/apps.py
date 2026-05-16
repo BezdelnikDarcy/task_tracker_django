@@ -6,5 +6,5 @@ class TaskManagerConfig(AppConfig):
     verbose_name = 'Менеджер задач'
 
 
-    def ready(self):
-        import task_manager.models.signals
+    # def ready(self):
+    #     import task_manager.models.signals
