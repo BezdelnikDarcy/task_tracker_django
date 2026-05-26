@@ -1,5 +1,7 @@
 from urllib import request
 
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.http import HttpResponse
@@ -17,6 +19,7 @@ from django.views.generic.base import TemplateView
 
 
 # MTV
+
 class HomePageView(TemplateView):
     template_name = "home.html"
 
@@ -30,7 +33,8 @@ class HomePageView(TemplateView):
 #     }
 #     return render(request, 'comments.html', context=context)
 # @cache_page(60*30)
-class CommentsListView(ListView):
+
+class CommentsListView(LoginRequiredMixin, ListView):
     template_name = "comments.html"
     model = Comments
     paginate_by = 15
@@ -44,7 +48,8 @@ class CommentsListView(ListView):
 #     }
 #     return render(request,"tasks.html",context=context)
 # @cache_page(60*30)
-class TasksView(ListView):
+
+class TasksView(LoginRequiredMixin, ListView):
     template_name = "tasks.html"
     model = Tasks
     paginate_by = 10
@@ -53,7 +58,7 @@ class TasksView(ListView):
         return Tasks.objects.task_optimization()
 
 
-class UserTasksDetailView(DetailView):
+class UserTasksDetailView(LoginRequiredMixin, DetailView):
     template_name = "user_tasks.html"
     model = User
     pk_url_kwarg = 'user_id'
@@ -75,7 +80,8 @@ class UserTasksDetailView(DetailView):
 #     return render(request, 'user_tasks.html', context=context)
 
 
-class CreateTaskFormView(CreateView):
+class CreateTaskFormView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'task_manager.add_tasks'
     template_name = "create_task.html"
     form_class = TaskForm
     success_url = reverse_lazy("tasks")
@@ -98,7 +104,8 @@ class CreateTaskFormView(CreateView):
 #
 #     return render(request, 'create_task.html', {'form': form})
 
-class CreateCommentFormView(CreateView):
+class CreateCommentFormView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'task_manager.add_comments'
     template_name = "create_comment.html"
     form_class = CommentForm
     success_url = reverse_lazy("comments")
@@ -124,7 +131,8 @@ class CreateCommentFormView(CreateView):
 #
 #     return render(request, 'create_comment.html', {'form': form})
 
-
+@login_required
+@permission_required('task_manager.change_tasks')
 def select_task(request):
     if request.method == "POST":
         task_id = request.POST.get('task')
@@ -133,7 +141,8 @@ def select_task(request):
         form = SelectTaskForm()
 
     return render(request, 'select_task.html', {'form': form})
-
+@login_required
+@permission_required('task_manager.change_tasks')
 def edit_task(request, **kwargs):
     task = Tasks.objects.get(id=kwargs['task_id'])
     if request.method == "POST":
@@ -146,7 +155,8 @@ def edit_task(request, **kwargs):
         form = TaskForm(instance=task)
     return render(request, 'edit_task.html', {'form': form})
 
-class CreateAttachmentsFormView(CreateView):
+class CreateAttachmentsFormView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'task_manager.add_attachments'
     template_name = "create_attachment.html"
     form_class = AttachmentsForm
     success_url = reverse_lazy("tasks")

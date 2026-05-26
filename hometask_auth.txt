@@ -1,0 +1,62 @@
+1) В админке созал 3 пользователя, изначально не шифровался пароль, решил переопределением метода save_model,
+у пользователей у которых пароль не был зашифрован, зашифровал вручную через shell.
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        if 'password' in form.changed_data:
+            obj.password = make_password(obj.password)
+        super().save_model(request, obj, form, change)
+
+Добавление пермиссий - зажал ctrl и выбрал все что связанно с менеджером задач на просмотр и изменение
+
+2)Создаю 2 группы
+Group.objects.create(name="Возможность добавлять задачи")
+Group.objects.create(name="Возможность просматривать информацию о задачах")
+Дале, я вывел список всех пермиссий с их id
+for i in range(21, count +1):
+    ...:          pr = Permission.objects.get(id = i)
+    ...:          lst.append((pr, i))
+Выбрал те которые я хочу добавить к группе
+gr = Group.objects.get(id=1)
+add_task = [21,25,29,33,37,41]
+gr.permissions.add(*add_task)
+Проверил все ли добавилось
+gr.permissions.all()
+Все тоже самое сделал со второй группой
+gr = Group.objects.get(id=2)
+view_task = [24,28,32,36,40,44]
+gr.permissions.all()
+
+3)Создание пользователя
+User.objects.create_user("user4@user.com","user")
+При создании пользователь сразу является активным т.к. наш пользователь наследуется от AbstractUser, а в AbstractUser
+is_active = True, по дефолту
+user.is_staff = True
+у меня уже созданы списки с id пермиссий для добавления и просмотра всех моделей менеджера задач, я просто их добавлю пользователю
+user.user_permissions.add(*add_task,*view_task)
+
+
+5) Настроил аунтификацию через токены.
+Получил токены через shell
+user = User.objects.get(id=1)
+token = Token.objects.create(user=user)
+token.key
+Получил токен через постман, создал новый запрос POST http://127.0.0.1:8000/api-token-auth/
+в body raw ввёл данные пользователя
+{
+    "username" : "user1@user.com",
+    "password" : "user"
+}
+Получил токен
+{
+    "token": "65fe465ce400fc24c5372d24b3f973a49905a35a"
+}
+
+Через manage.py
+(.venv) PS C:\Users\deada\PycharmProjects\PythonProject\Django#1> py src/manage.py drf_create_token user3@user.com
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'djdt' isn't unique. You may not be able to reverse all URLs in this namespace
+Generated token 9a718834e9693778feefdac5ccbbbc63534ef6aa for user user3@user.com
+

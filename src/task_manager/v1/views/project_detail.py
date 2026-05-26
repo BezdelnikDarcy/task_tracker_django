@@ -5,11 +5,13 @@ from rest_framework.response import Response
 from django.http import Http404
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema
+from rest_framework.permissions import IsAdminUser
 
 
 @extend_schema(tags=["ProjectDetails"])
 class ProjectDetailsListApiView(APIView):
     serializer_class = ProjectDetailsSerializer
+    permission_classes = (IsAdminUser,)
 
     @extend_schema(
         summary="Get all projects",
@@ -37,6 +39,7 @@ class ProjectDetailsListApiView(APIView):
 @extend_schema(tags=["ProjectDetails"])
 class ProjectDetailsDetailApiView(APIView):
     serializer_class = ProjectDetailsSerializer
+    permission_classes = (IsAdminUser,)
 
     def get_object(self, pk):
         try:

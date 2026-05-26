@@ -5,11 +5,15 @@ from rest_framework.response import Response
 from django.http import Http404
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema
+from rest_framework.permissions import IsAdminUser
+
 
 
 @extend_schema(tags=["Tasks"])
 class TaskListApiView(APIView):
     serializer_class = TaskSerializer
+    permission_classes = (IsAdminUser,)
+
 
     @extend_schema(
         summary="Get all tasks",
@@ -37,6 +41,7 @@ class TaskListApiView(APIView):
 @extend_schema(tags=["Tasks"])
 class TaskDetailApiView(APIView):
     serializer_class = TaskSerializer
+    permission_classes = (IsAdminUser,)
 
     def get_object(self, pk):
         try:
