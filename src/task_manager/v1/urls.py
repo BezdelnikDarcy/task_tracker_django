@@ -5,7 +5,7 @@ from task_manager.v1.views.attachment import AttachmentListApiView, AttachmentDe
 from task_manager.v1.views.comment import CommentListApiView, CommentDetailApiView
 from task_manager.v1.views.project import ProjectListApiView, ProjectDetailApiView
 from task_manager.v1.views.project_detail import ProjectDetailsListApiView, ProjectDetailsDetailApiView
-
+from task_manager.v1.views.user import UserListApiView
 
 urlpatterns = [
     path("tasks/", TaskListApiView.as_view()),
@@ -20,5 +20,6 @@ urlpatterns = [
     path("projects/<int:pk>/", ProjectDetailApiView.as_view()),
     path("project_details/", ProjectDetailsListApiView.as_view()),
     path("project_details/<int:pk>/", ProjectDetailsDetailApiView.as_view()),
+    path("user/", UserListApiView.as_view()),
 
 ]
