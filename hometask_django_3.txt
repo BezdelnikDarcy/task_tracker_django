@@ -1,0 +1,23 @@
+2) tasks = Tasks.objects.all()
+   tasks
+3) for task in tasks:
+   ...:     print(task.name, task.status)
+4) task_4 = Tasks.objects.all().filter(Q(status = "created") | Q(status = "started"))
+   task_4
+5) task_5 =Tasks.objects.all().filter(priority = 5)
+   task_5
+6) task_6 = Tasks.objects.all().filter(is_reopened = True)
+   task_6
+7) task_7 = Tasks.objects.all().order_by("-priority", "created_at")
+   task_7
+8) task_8 = Tasks.objects.all().count()
+   task_8
+9) task_9 = Tasks.objects.all().order_by("-created_at").first()
+   task_9
+10) task_10 = Tasks.objects.all().exclude(status="completed").exclude(status="cancelled")
+    task_10
+11) task_11 = Tasks.objects.all().filter(description__isnull=False)
+    task_11
+12)
+13)
+14)

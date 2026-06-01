@@ -1,0 +1,25 @@
+1) task = Tasks.objects.all().count()
+   task
+2) assignee = User.objects.annotate(task_count = Count('tasks')).order_by('-task_count').first()
+   assignee
+3) tasks = Tasks.objects.annotate(count_comment = Count('comments'))
+   for task in tasks:
+       print(task, task.count_comment)
+4) tasks = Tasks.objects.annotate(count_comment = Count('comments')).filter(count_comment__gt = 3)
+   tasks
+5) users = User.objects.annotate(avg_priority = Avg('tasks__priority'))
+   for user in users:
+       print(user, user.avg_priority
+6) tags = Tags.objects.annotate(sum_priority = Sum('tasks__priority'))
+   for tag in tags:
+       print(tag, tag.sum_priority)
+7) tasks = Tasks.objects.annotate(count_comments = Count('comments'), count_tags = Count('tags')).filter(count_comments__gt=F('count_tags'))
+   for task in tasks:
+       print(task, task.count_comments, task.count_tags)
+8) user = User.objects.annotate(count_comments = Count('tasks__comments')).order_by('-count_comments')[:3]
+   for user in users:
+       print(user)
+9)  tasks = Tasks.objects.raw('SELECT tasks.id, name, COUNT(comments.id) FROM tasks LEFT JOIN comments on tasks.id = comments.task_id GROUP BY tasks.id ORDER BY COUNT(comments.id) DESC LIMIT 1')
+10) avg = Tasks.objects.aggregate(avg = Avg('priority'))['avg']
+    tasks = Tasks.objects.annotate(count_comments = Count('comments')).filter(count_comments__gt=5, priority__gt=avg)
+    tasks

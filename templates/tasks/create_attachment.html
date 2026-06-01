@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<p>Форма для добавления вложения <p>
+
+<form enctype="multipart/form-data" action={% url 'create_attachment' %} method="post">
+    {{ form|crispy}}
+    {% csrf_token %}
+    <input type="submit" value="Добавить вложения">
+</form>
+
+{% endblock %}

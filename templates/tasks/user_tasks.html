@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load cache %}
+<style>
+.table-emerald thead {
+    background-color: #10b981;
+    color: white;
+}
+
+.table-emerald tbody tr:hover {
+    background-color: #d1fae5;
+}
+
+.table-emerald td:hover,
+.table-emerald th:hover {
+    background-color: #6ee7b7;
+}
+
+.table-emerald td,
+.table-emerald th {
+    transition: background-color 0.2s;
+}
+</style>
+<div class="container mt-4" style="max-width: 1500px;">
+<!--    {% cache 1200 sidebar %}-->
+<table class="table table-dark table-hover text-center">
+  <thead>
+    <tr>
+      <th scope="col">Пользователь</th>
+      <th scope="col">Задача</th>
+      <th scope="col">Комментарии</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  {% for task in tasks %}
+  <tr>
+      <td>{{ task.assignee}} </td>>
+      <td>{{ task.name }}</td>
+<td>
+      {% for comment in task.comments.all %}
+         <p>{{ comment.message }}
+      {% endfor %}
+</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<!--    {% endcache %}-->
+
+</div>
+{% endblock %}
