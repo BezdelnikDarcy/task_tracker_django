@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+from email.policy import default
 from pathlib import Path
 import environ
 import os
@@ -41,7 +41,7 @@ SECRET_KEY = env('SECRET_KEY')
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["testserver","localhost","127.0.0.1"]
 
 
 # Application definition
@@ -111,6 +111,9 @@ DATABASES = {
         "PORT": env("PG_PORT"),
         "OPTIONS": {
             "client_encoding": "UTF8",
+        },
+        "TEST": {
+            "NAME": env("PG_TEST_DB", default="test_task_tracker"),
         },
     },
 }

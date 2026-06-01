@@ -16,6 +16,8 @@ from task_manager.models.forms import TaskForm, CommentForm, SelectTaskForm, Att
 from account.models.users import User
 from django.views.decorators.cache import cache_page
 from django.views.generic.base import TemplateView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_not_required
 
 
 # MTV
@@ -48,8 +50,8 @@ class CommentsListView(LoginRequiredMixin, ListView):
 #     }
 #     return render(request,"tasks.html",context=context)
 # @cache_page(60*30)
-
-class TasksView(LoginRequiredMixin, ListView):
+@method_decorator(login_not_required, name='dispatch')
+class TasksView(ListView):
     template_name = "tasks.html"
     model = Tasks
     paginate_by = 10
