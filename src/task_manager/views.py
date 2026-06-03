@@ -19,6 +19,8 @@ from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_not_required
 
+from task_manager.tasks import add
+
 
 # MTV
 
@@ -71,6 +73,19 @@ class UserTasksDetailView(LoginRequiredMixin, DetailView):
         context["tasks"] = Tasks.objects.filter(assignee__id=user_id).all()
         context["id"] = user_id
         return context
+
+def user_test_validate(pk):
+
+    res = add.delay(pk, pk + 1)
+    print(res)
+    return True
+
+def show_self_email(request,pk):
+    user  = User.objects.get(id=pk)
+    res = user_test_validate(pk)
+    print(res)
+    return render(request, 'show_email.html', {"user": user})
+
 
 
 # def user_tasks(request, user_id):

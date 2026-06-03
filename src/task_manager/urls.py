@@ -1,7 +1,7 @@
 from django.urls import path, include
 from task_manager.views import HomePageView, TasksView, UserTasksDetailView, CommentsListView, CreateCommentFormView, CreateTaskFormView, edit_task, select_task, CreateAttachmentsFormView
 from debug_toolbar.toolbar import debug_toolbar_urls
-
+from task_manager.views import show_self_email
 
 urlpatterns = [
     path('', HomePageView.as_view() , name = 'home'),
@@ -14,4 +14,5 @@ urlpatterns = [
     path('edit_task/<int:task_id>', edit_task, name='edit_task'),
     path('create_attachment', CreateAttachmentsFormView.as_view(), name='create_attachment'),
     path('api/', include('task_manager.v1.urls')),
+    path('show_email/<int:pk>', show_self_email, name = 'show_self_email'),
 ] + debug_toolbar_urls()
