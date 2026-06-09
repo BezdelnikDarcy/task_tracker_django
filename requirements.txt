@@ -1,0 +1,21 @@
+Django == 6.0.3
+django-environ==0.13.0
+psycopg2-binary==2.9.11
+ipython==9.11.0
+django-extensions==4.1
+django-debug-toolbar==6.2.0
+factory_boy==3.3.3
+Faker==40.13.0
+django-crispy-forms==2.6
+crispy-bootstrap5==2026.3
+pillow==12.2.0
+Markdown==3.10.2
+djangorestframework==3.17.1
+django-filter==25.2
+drf-spectacular==0.29.0
+redis==8.0.0
+celery==5.6.3
+django_celery_results==2.6.0
+flower==2.0.1
+django-celery-beat==2.9.0
+ephem==4.2.1

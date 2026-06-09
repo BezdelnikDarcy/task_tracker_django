@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<p>Форма для создания комментария <p>
+
+<form action="/create_comment" method="post">
+    {{ form|crispy }}
+    {% csrf_token %}
+    <input type="submit" value="Создать комментарий">
+</form>
+
+{% endblock %}

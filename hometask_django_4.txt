@@ -1,0 +1,22 @@
+5)  task_5 = Comments.objects.all()
+    for comment in task_5:
+    ...:     print(comment.task)
+6)  task_6 = ProjectDetails.objects.all()
+    for details in task_6:
+    ...:     print(details.project)
+7)  task_7 = Tasks.objects.filter(project__id=3)
+    task_7
+8)  task_8 = Tags.objects.get(name = "Django").tasks.all()
+    task_8
+9)  task = Tags.objects.get(name = "Django").tasks.all()
+    task_9 = Comments.objects.filter(user__id=2)
+    for i in task_9:
+    ...:     if i.task in task:
+    ...:         print(i)
+10) task_10 = Tasks.objects.filter(status=TaskStatus.CANCELLED)
+    projects = []
+    for task in task_10:
+     ...:     if task.project not in projects:
+     ...:         projects.append(task.project)
+    projects
+11)
